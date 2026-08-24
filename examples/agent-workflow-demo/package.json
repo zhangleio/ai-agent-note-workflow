@@ -1,0 +1,23 @@
+{
+  "name": "agent-workflow-demo",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "bin": {
+    "todo-demo": "dist/src/index.js"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/src/index.js",
+    "test": "node --test dist/test/**/*.test.js",
+    "verify:notes": "node scripts/verify-agent-notes.mjs",
+    "check": "npm run verify:notes && npm run build && npm test"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^6.0.0"
+  }
+}
