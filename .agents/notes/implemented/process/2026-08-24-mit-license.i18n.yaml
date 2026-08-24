@@ -1,0 +1,4 @@
+# Bilingual-pair consistency record: the git blob hash of each side as of the
+# last confirmed-consistent state. Both languages carry equal authority.
+2026-08-24-mit-license.md: 62b7aa2494df2abe0cec49103396d126ba7fa993
+2026-08-24-mit-license.zh.md: cfbfedbdbdbaeb438f18cfeed6090b9b91268330
