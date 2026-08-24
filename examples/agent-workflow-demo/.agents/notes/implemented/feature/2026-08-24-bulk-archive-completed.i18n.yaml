@@ -1,4 +1,6 @@
-{
-  "2026-08-24-bulk-archive-completed.md": "55252e1ff935baea56a564f51afa054f50cf641f",
-  "2026-08-24-bulk-archive-completed.zh.md": "4fe379e23cbb696e23cf08358286ecbb4bab3ed9"
-}
+# Bilingual-pair consistency record: the git blob hash of each side as of the
+# last confirmed-consistent state. Both languages carry equal authority.
+# After editing either side, review both documents, update both hashes, and run:
+#   npm run verify:notes
+2026-08-24-bulk-archive-completed.md: 55252e1ff935baea56a564f51afa054f50cf641f
+2026-08-24-bulk-archive-completed.zh.md: 4fe379e23cbb696e23cf08358286ecbb4bab3ed9

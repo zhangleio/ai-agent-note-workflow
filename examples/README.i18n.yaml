@@ -1,6 +1,6 @@
 # Bilingual-pair consistency record: the git blob hash of each side as of the
 # last confirmed-consistent state. Both languages carry equal authority.
 # After editing either side, review both documents, update both hashes, and run:
-#   npm run verify:notes
-2026-08-24-clear-completed-command.md: 8cadfc595e77b0efccb2d50bc7656b975affa975
-2026-08-24-clear-completed-command.zh.md: fd56123267712afd75392933cce6f74784be8256
+#   node ../scripts/verify-doc-i18n.mjs
+README.md: 55fd4a5407e3f95708b2008389d383978eec39e3
+README.zh.md: 52964bac51ec37cf4c6a21637242a6d65ad2e7e0

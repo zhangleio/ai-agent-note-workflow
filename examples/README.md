@@ -1,18 +1,22 @@
-# 示例项目
+# Example Projects
 
-本目录提供两个可以独立安装、构建和测试的 Agent Note 工作流示例，适合作为创建新项目时的结构参考。
+English | [简体中文](README.zh.md)
+
+This directory contains two independently installable, buildable, and testable Agent Note workflow examples. Use them as structural references when creating a new project.
+
+This index is a governed bilingual document. Update [the Chinese counterpart](README.zh.md) in the same change and run `node ../scripts/verify-doc-i18n.mjs` from this directory after refreshing `README.i18n.yaml`.
 
 ## agent-workflow-demo
 
-[agent-workflow-demo](agent-workflow-demo/) 是一个待办事项 CLI，演示较完整的需求演进过程，包括：
+[agent-workflow-demo](agent-workflow-demo/) is a todo CLI that demonstrates a broad requirement evolution history, including:
 
-- feature、bug-fix 和 simplification 等不同类别的 Agent Note；
-- proposed、implemented、rejected 和 archived 生命周期；
-- 中英文同等权威文档及 Git blob hash 一致性门禁；
-- 持久化格式迁移、功能撤回和规则取代；
-- 聚焦测试、完整检查和人工实施验收。
+- Agent Notes from different classes such as feature, bug-fix, and simplification;
+- proposed, implemented, rejected, and archived lifecycles;
+- equal-authority English and Chinese documents with a Git blob hash consistency gate;
+- persistence format migration, feature withdrawal, and rule supersession;
+- focused tests, complete checks, and human implementation acceptance.
 
-运行完整检查：
+Run its complete check:
 
 ```powershell
 cd agent-workflow-demo
@@ -22,17 +26,17 @@ npm run check
 
 ## text-stats-workflow-demo
 
-[text-stats-workflow-demo](text-stats-workflow-demo/) 是一个文本统计 CLI，演示从需求澄清、提案修改到实施验收的 feature 全流程，包括：
+[text-stats-workflow-demo](text-stats-workflow-demo/) is a text statistics CLI that demonstrates the complete feature workflow from requirement clarification and proposal revision through implementation acceptance, including:
 
-- 单文件行数、词数和 Unicode 字符数统计；
-- 按多个文件后缀递归统计目录行数；
-- 默认值、CLI 参数、错误兼容性和符号链接等边界决策；
-- 分层实现后的聚焦验证和真实子进程测试；
-- Agent Note 从 proposed 到 implemented 的三件套迁移。
+- line, word, and Unicode character statistics for one file;
+- recursive directory line counts for multiple file extensions;
+- boundary decisions about defaults, CLI arguments, error compatibility, and symbolic links;
+- focused validation after layered implementation and real subprocess tests;
+- moving an Agent Note triplet from proposed to implemented.
 
-CLI 的具体使用方法见 [项目 README](text-stats-workflow-demo/README.md)。
+See the [project README](text-stats-workflow-demo/README.md) for CLI usage. This example currently provides only that project-specific README.
 
-运行完整检查：
+Run its complete check:
 
 ```powershell
 cd text-stats-workflow-demo
@@ -40,4 +44,4 @@ npm install
 npm run check
 ```
 
-两个示例均要求 Node.js 22 或更高版本。`node_modules` 和 `dist` 是本地依赖与构建产物，不属于参考源码。
+Both examples require Node.js 22 or later. `node_modules` and `dist` are local dependencies and build outputs, not reference source.

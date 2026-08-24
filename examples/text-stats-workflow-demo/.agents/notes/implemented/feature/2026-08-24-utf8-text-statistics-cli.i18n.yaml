@@ -1,4 +1,6 @@
-{
-  "2026-08-24-utf8-text-statistics-cli.md": "b8241d5ee8c342c6ae00263c927c7f2721da865e",
-  "2026-08-24-utf8-text-statistics-cli.zh.md": "617d909f4c87e9d812a24260d5c476b7067aca02"
-}
+# Bilingual-pair consistency record: the git blob hash of each side as of the
+# last confirmed-consistent state. Both languages carry equal authority.
+# After editing either side, review both documents, update both hashes, and run:
+#   npm run verify:notes
+2026-08-24-utf8-text-statistics-cli.md: b8241d5ee8c342c6ae00263c927c7f2721da865e
+2026-08-24-utf8-text-statistics-cli.zh.md: 617d909f4c87e9d812a24260d5c476b7067aca02

@@ -1,4 +1,6 @@
-{
-  "2026-08-24-json-todo-cli.md": "1721f10b15edfe925db26890342974e6b985b721",
-  "2026-08-24-json-todo-cli.zh.md": "178036694c03186ec921a74964fec5ae3ffacece"
-}
+# Bilingual-pair consistency record: the git blob hash of each side as of the
+# last confirmed-consistent state. Both languages carry equal authority.
+# After editing either side, review both documents, update both hashes, and run:
+#   npm run verify:notes
+2026-08-24-json-todo-cli.md: 1721f10b15edfe925db26890342974e6b985b721
+2026-08-24-json-todo-cli.zh.md: 178036694c03186ec921a74964fec5ae3ffacece

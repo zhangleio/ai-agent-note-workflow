@@ -1,4 +1,6 @@
-{
-  "2026-08-24-directory-line-count-by-extension.md": "2a8249089b3995548795719eb8d679a1a33844a1",
-  "2026-08-24-directory-line-count-by-extension.zh.md": "386f0f068582e43e1928f8fca83a577a8e4e3c64"
-}
+# Bilingual-pair consistency record: the git blob hash of each side as of the
+# last confirmed-consistent state. Both languages carry equal authority.
+# After editing either side, review both documents, update both hashes, and run:
+#   npm run verify:notes
+2026-08-24-directory-line-count-by-extension.md: 2a8249089b3995548795719eb8d679a1a33844a1
+2026-08-24-directory-line-count-by-extension.zh.md: 386f0f068582e43e1928f8fca83a577a8e4e3c64

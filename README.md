@@ -1,49 +1,51 @@
-# AI Agent 开发工作流
+# AI Agent Development Workflow
 
-这是一套适合新项目复用的 **Agent Note 驱动开发工作流**。它通过可评审的决策记录，把需求讨论、方案选择、代码实施、测试验证、需求否决、规则取代和历史归档连接起来。
+English | [简体中文](README.zh.md)
 
-这套工作流解决的核心问题不是“让 Agent 多写文档”，而是确保以下事实可以被长期追溯：
+This is an **Agent Note driven development workflow** designed for reuse in new projects. Through reviewable decision records, it connects requirement discussions, solution selection, code implementation, test verification, requirement rejection, rule supersession, and historical archiving.
 
-- 为什么要做这项变更；
-- 哪些方案被考虑过，为什么没有采用；
-- 谁在实施前批准了需求；
-- 哪些验证证据证明实现符合决策；
-- 当前项目到底遵循哪份规则；
-- 旧规则为什么退出，以及以后能否重新提出；
-- 中英文决策文档是否保持一致。
+The core purpose of this workflow is not to "make the Agent write more documentation," but to ensure that the following facts remain traceable over time:
 
-完整可运行的参考项目见 [examples](examples/README.md)。其中包含待办事项 CLI 的多生命周期演进示例，以及文本统计 CLI 从需求澄清到实施验收的 feature 示例。
+- Why a change was made;
+- Which alternatives were considered and why they were not selected;
+- Who approved the requirement before implementation;
+- Which verification evidence demonstrates that the implementation conforms to the decision;
+- Which rules the current project actually follows;
+- Why an old rule was retired and whether it may be proposed again later;
+- Whether the English and Chinese decision documents remain consistent.
 
-## 1. 核心原则
+See [examples](examples/README.md) for complete, runnable reference projects. They include a multi-lifecycle evolution example for a to-do CLI and a feature example that takes a text statistics CLI from requirement clarification through implementation acceptance.
 
-### 1.1 决策先于非平凡实现
+## 1. Core Principles
 
-功能、行为、架构、存储格式、协议、流程或测试策略发生非平凡变化时，先建立 Agent Note，再修改代码。
+### 1.1 Decisions Precede Non-Trivial Implementation
 
-小型机械修改可以豁免，例如拼写修复、无语义格式调整或明确的局部重命名。只要变更需要讨论取舍，就不再属于机械修改。
+When a feature, behavior, architecture, storage format, protocol, process, or testing strategy changes in a non-trivial way, create an Agent Note before modifying code.
 
-### 1.2 人类参与关键决策
+Small mechanical changes may be exempt, such as spelling fixes, formatting changes with no semantic effect, or explicit local renames. As soon as a change requires discussion of tradeoffs, it is no longer mechanical.
 
-Agent 可以调查、提出方案、实施和验证，但以下节点由项目负责人决定：
+### 1.2 Humans Participate in Key Decisions
 
-1. 需求语义与边界；
-2. 是否批准 proposed Note；
-3. 验证通过后是否接受实施；
-4. 是否拒绝、取代或归档一项决策。
+An Agent may investigate, propose solutions, implement, and verify, but the project owner decides the following:
 
-### 1.3 代码通过不等于决策交付
+1. Requirement semantics and boundaries;
+2. Whether to approve a proposed Note;
+3. Whether to accept the implementation after verification passes;
+4. Whether to reject, supersede, or archive a decision.
 
-代码写完或测试通过后，Note 仍保持 `proposed`，直到负责人完成实施验收。验收通过后，才能将完整 Note 组迁移到 `implemented`。
+### 1.3 Passing Code Is Not the Same as Delivering a Decision
 
-### 1.4 不改写决策历史
+After the code is complete or the tests pass, the Note remains `proposed` until the owner completes implementation acceptance. Only after acceptance may the complete Note triplet move to `implemented`.
 
-需求变化时，不要直接把旧 Note 改成新需求，好像旧规则从未存在。使用新的 proposed Note 扩展、部分取代或完整取代旧决策。
+### 1.4 Do Not Rewrite Decision History
 
-### 1.5 机械门禁优于口头约定
+When requirements change, do not directly rewrite an old Note into the new requirement as though the old rule never existed. Use a new proposed Note to extend, partially supersede, or fully supersede the old decision.
 
-生命周期、必需章节、双语配对、重复主题和归档冻结都应由脚本检查。只写在 README 中、但没有门禁执行的规则容易逐渐失效。
+### 1.5 Mechanical Gates Are Better Than Verbal Agreements
 
-## 2. 推荐目录
+Lifecycles, required sections, bilingual pairing, duplicate topics, and archive immutability should all be checked by scripts. Rules written only in a README, without an enforcing gate, tend to erode over time.
+
+## 2. Recommended Directory Structure
 
 ```text
 .agents/
@@ -56,102 +58,102 @@ Agent 可以调查、提出方案、实施和验证，但以下节点由项目�
 		│   ├── process/
 		│   └── testing/
 		├── implemented/
-		│   └── ...同样的类别目录
+		│   └── ...the same class directories
 		├── rejected/
-		│   └── ...同样的类别目录
+		│   └── ...the same class directories
 		└── archived/
 				├── manifest.json
-				└── ...同样的类别目录
+				└── ...the same class directories
 ```
 
-每份 Note 的路径格式为：
+Each Note uses the following path format:
 
 ```text
 {lifecycle}/{class}/yyyy-mm-dd-topic.md
 ```
 
-日期表示主题第一次被提出的日期。生命周期迁移时文件名中的日期不变。
+The date is when the topic was first proposed. It does not change when the file moves between lifecycles.
 
-## 3. 生命周期
+## 3. Lifecycles
 
 ### `proposed`
 
-表示正在讨论、尚未成为当前规则的提案。
+A proposal that is under discussion and has not yet become a current rule.
 
-- 可以描述计划、迁移步骤和预期结果；
-- 不应被代码或其他文档当作既定事实；
-- 获得需求批准后才进入实施；
-- 实施验收通过后迁移到 `implemented`；
-- 被否决后迁移到 `rejected`。
+- It may describe plans, migration steps, and expected results;
+- Code and other documentation must not treat it as established fact;
+- Implementation begins only after requirement approval;
+- It moves to `implemented` after implementation acceptance;
+- It moves to `rejected` if declined.
 
 ### `implemented`
 
-表示已经交付、当前有效的决策。
+A delivered decision that is currently in force.
 
-- 当前代码和后续开发应遵守其中规则；
-- 使用现在时描述实际行为；
-- 必须包含真实验证证据；
-- 需求变化时，由新 Note 扩展或取代；
-- 完整退出当前指导范围后，可以迁移到 `archived`。
+- Current code and subsequent development must follow its rules;
+- It describes actual behavior in the present tense;
+- It must include real verification evidence;
+- When requirements change, a new Note extends or supersedes it;
+- Once it has completely left the scope of current guidance, it may move to `archived`.
 
 ### `rejected`
 
-表示讨论过但没有成为有效规则的提案。
+A proposal that was discussed but never became an effective rule.
 
-- 状态行应记录简短的否决原因；
-- 不应实现该方案；
-- 如果条件变化，不要把旧 Note 原地改回 proposed；
-- 应创建新 proposed Note，引用旧否决记录并说明前置条件如何变化。
+- Its status line should record a brief reason for rejection;
+- The proposal must not be implemented;
+- If conditions change, do not change the old Note back to proposed in place;
+- Create a new proposed Note that references the old rejection and explains how the prerequisites have changed.
 
 ### `archived`
 
-表示历史上实施过，但已经不再指导当前项目的规则。
+A rule that was implemented historically but no longer guides the current project.
 
-- 保持 `Status: implemented`；
-- 增加 `Archived: YYYY-MM-DD`；
-- 只用于历史追溯，不作为当前实现依据；
-- 归档后永久冻结，不编辑、不翻译、不重新格式化；
-- 如需重新采用旧想法，应创建新 proposed Note，而不是重新激活旧文件。
+- Keep `Status: implemented`;
+- Add `Archived: YYYY-MM-DD`;
+- Use it only for historical traceability, not as a basis for current implementation;
+- Freeze it permanently after archiving: do not edit, translate, or reformat it;
+- To adopt an old idea again, create a new proposed Note instead of reactivating the old file.
 
-最简记忆方式：
+The shortest way to remember the lifecycles is:
 
 ```text
-proposed    = 尚未决定
-implemented = 当前有效
-rejected    = 从未生效
-archived    = 曾经有效
+proposed    = not yet decided
+implemented = currently in force
+rejected    = never took effect
+archived    = previously in force
 ```
 
-## 4. 决策类别
+## 4. Decision Classes
 
-| 类别 | 使用场景 |
+| Class | When to use it |
 |---|---|
-| `feature` | 增加面向用户、模型或调用方的新能力 |
-| `bug-fix` | 修正违反既有约定的缺陷，或填补事故复盘发现的缺口 |
-| `simplification` | 在不增加能力的前提下移除代码、状态、行为或对外范围 |
-| `architecture` | 交付源码的结构性决策，例如模块关系、数据模型和运行时职责 |
-| `process` | 代码周边的工具、门禁、依赖管理、发布或工作流 |
-| `testing` | 测试基础设施、覆盖策略、快照或端到端验证方式 |
+| `feature` | Add a new capability for users, models, or callers |
+| `bug-fix` | Correct a defect that violates an existing agreement, or close a gap found during an incident review |
+| `simplification` | Remove code, state, behavior, or public scope without adding capabilities |
+| `architecture` | Make a structural decision about delivered source code, such as module relationships, data models, or runtime responsibilities |
+| `process` | Change surrounding tools, gates, dependency management, releases, or workflows |
+| `testing` | Change test infrastructure, coverage strategy, snapshots, or end-to-end verification methods |
 
-### Feature 与 Bug-fix 的区别
+### Feature vs. Bug-fix
 
-判断问题是：**既有有效决策是否已经承诺该行为？**
+The deciding question is: **Does an existing effective decision already promise this behavior?**
 
-- 没有承诺，需要新增能力：`feature`；
-- 已经承诺，但实现不符合：`bug-fix`。
+- If not, and a new capability is required: `feature`;
+- If yes, but the implementation does not conform: `bug-fix`.
 
-Bug-fix 推荐先添加一个必然失败的回归测试，记录修复前的失败证据，再实施最小修复并让同一个测试转为通过。
+For a bug-fix, first add a regression test that is guaranteed to fail, record the pre-fix failure evidence, then implement the smallest fix and make the same test pass.
 
-### Simplification 与 Architecture 的区别
+### Simplification vs. Architecture
 
-- 改变系统结构并建立新的长期职责模型：`architecture`；
-- 删除重复机制、未使用范围或多余状态，且不增加能力：`simplification`。
+- Change the system structure and establish a new long-term responsibility model: `architecture`;
+- Remove duplicate mechanisms, unused scope, or redundant state without adding capabilities: `simplification`.
 
-Simplification 必须证明外部能力没有意外变化，通常依靠既有测试以及针对被删除路径的验证。
+A simplification must prove that external capabilities did not change unintentionally, usually through existing tests plus verification focused on the removed path.
 
-## 5. 双语三文件组
+## 5. Bilingual Three-File Groups
 
-每份 Agent Note 由同目录三件套组成：
+Each Agent Note consists of three files in the same directory:
 
 ```text
 topic.md
@@ -159,72 +161,89 @@ topic.zh.md
 topic.i18n.yaml
 ```
 
-### 同等权威
+### Equal Authority
 
-英文和简体中文具有同等权威。任一语言都可以先起草，但另一侧必须在同一变更中同步，不能把中文定义为可选翻译。
+English and Simplified Chinese have equal authority. Either language may be drafted first, but the other side must be synchronized in the same change. Chinese must not be treated as an optional translation.
 
-英文文件在状态块后添加：
+After the status block, the English file adds:
 
 ```markdown
 English | [中文](topic.zh.md)
 ```
 
-中文文件添加：
+The Chinese file adds:
 
 ```markdown
 [English](topic.md) | 中文
 ```
 
-双方应保持：
+Both sides must preserve:
 
-- 生命周期状态相同；
-- 标题层级和顺序相同；
-- 事实、约束、备选方案和后果等价；
-- 代码块内容一致；
-- 除语言切换链接外，链接目标一致；
-- 列表和表格结构一致。
+- The same lifecycle status;
+- The same heading levels and order;
+- Equivalent facts, constraints, alternatives, and consequences;
+- Identical code block content;
+- The same link targets except for the language switch links;
+- The same list and table structure.
 
-### 一致性记录
+### Consistency Record
 
-`.i18n.yaml` 保存双方最后一次人工确认语义一致时的 Git blob hash。建议使用 JSON 语法，因为 JSON 是 YAML 1.2 的子集，也便于零依赖校验：
+The `.i18n.yaml` stores the Git blob hashes from the last time both documents were manually confirmed to be semantically consistent. It uses a strict YAML mapping with one unquoted Markdown basename and one lowercase 40-character hash per line. Comments and blank lines are allowed; JSON object syntax, quoted keys, duplicate or unknown keys, nested values, and trailing punctuation are rejected:
 
-```json
-{
-	"topic.md": "<english-git-blob-hash>",
-	"topic.zh.md": "<chinese-git-blob-hash>"
-}
+```yaml
+# Bilingual-pair consistency record
+topic.md: <english-git-blob-hash>
+topic.zh.md: <chinese-git-blob-hash>
 ```
 
-计算方式：
+Calculate the hashes with:
 
 ```powershell
 git hash-object ".agents/notes/proposed/feature/topic.md"
 git hash-object ".agents/notes/proposed/feature/topic.zh.md"
 ```
 
-当修改任一语言时：
+When either language changes:
 
-1. 同步修改另一侧；
-2. 人工确认语义仍然一致；
-3. 重新计算双方 Git blob hash；
-4. 更新 `.i18n.yaml`；
-5. 运行 Note 门禁。
+1. Update the other side in sync;
+2. Manually confirm that their semantics remain consistent;
+3. Recalculate both Git blob hashes;
+4. Update `.i18n.yaml`;
+5. Run the Note gate.
 
-绿色门禁只能证明“当前内容与上次确认内容一致”，不能证明翻译质量。语义准确性仍由评审负责。
+A green gate proves only that the current content matches the content confirmed last time. It does not prove translation quality. Semantic accuracy remains the reviewer's responsibility.
 
-## 6. 标准开发流程
+### Repository Document Consistency
 
-### 阶段 A：需求澄清
+The root guide, root Agent instructions, and example index also use adjacent `.i18n.yaml` records:
 
-1. 找到当前控制该行为的代码与 implemented Note；
-2. 明确用户可观察行为、输入、输出和失败语义；
-3. 明确数据是否写入、失败时是否保持字节不变；
-4. 讨论兼容性、恢复能力、权限、安全和并发限制；
-5. 由负责人选择方案。
+```text
+README.i18n.yaml
+AGENTS.i18n.yaml
+examples/README.i18n.yaml
+```
 
-### 阶段 B：建立 proposed Note
+After updating either language in one of these pairs, review both documents, refresh both LF-normalized Git blob hashes, and run:
 
-同时创建三件套，正文至少包含：
+```powershell
+node scripts/verify-doc-i18n.mjs
+```
+
+This zero-dependency gate checks the three records, reciprocal language switchers, corresponding heading and fenced-block structures, and real relative links outside fenced examples. These ordinary-document records are separate from Agent Note lifecycle validation.
+
+## 6. Standard Development Process
+
+### Stage A: Requirement Clarification
+
+1. Locate the code and implemented Note that currently control the behavior;
+2. Define user-observable behavior, inputs, outputs, and failure semantics;
+3. Determine whether data is written and whether it remains byte-for-byte unchanged on failure;
+4. Discuss compatibility, recoverability, permissions, security, and concurrency constraints;
+5. Have the owner select the solution.
+
+### Stage B: Create a Proposed Note
+
+Create all three files together. The body must include at least:
 
 ```markdown
 ## Problem
@@ -234,7 +253,7 @@ git hash-object ".agents/notes/proposed/feature/topic.zh.md"
 ## Risks
 ```
 
-中文对侧使用等价章节：
+The Chinese counterpart uses equivalent sections:
 
 ```markdown
 ## 问题
@@ -244,42 +263,42 @@ git hash-object ".agents/notes/proposed/feature/topic.zh.md"
 ## 风险
 ```
 
-提案中应记录真实考虑过的方案，而不是为了填章节虚构明显不合理的选项。
+Record alternatives that were genuinely considered. Do not invent obviously unreasonable options merely to fill the section.
 
-### 阶段 C：需求评审
+### Stage C: Requirement Review
 
-负责人选择：
+The owner chooses one of the following:
 
-- 批准实施；
-- 要求修改提案；
-- 否决提案。
+- Approve implementation;
+- Request revisions to the proposal;
+- Reject the proposal.
 
-未批准前不修改业务代码。探索性原型如果已经存在，也不能因此跳过评审。
+Do not modify product code before approval. An exploratory prototype, even if one already exists, does not justify skipping review.
 
-### 阶段 D：实施与聚焦验证
+### Stage D: Implementation and Focused Verification
 
-1. 做最小可验证改动；
-2. 第一处实质编辑后立即运行最聚焦的验证；
-3. bug-fix 先建立失败回归测试；
-4. 验证失败操作不产生写入或部分状态；
-5. 修复同一局部问题并重复相同验证；
-6. 最后运行项目完整门禁。
+1. Make the smallest verifiable change;
+2. Immediately run the most focused verification after the first substantive edit;
+3. For a bug-fix, establish a failing regression test first;
+4. Verify that failed operations produce no writes or partial state;
+5. Fix the same local issue and repeat the same verification;
+6. Finally, run the project's complete gate.
 
-### 阶段 E：实施验收
+### Stage E: Implementation Acceptance
 
-向负责人报告：
+Report the following to the owner:
 
-- 实际实现了什么；
-- 哪些测试在修复前失败；
-- 哪些测试在修复后通过；
-- 是否存在残余限制或兼容性影响；
-- Note、构建、类型检查和测试的实际结果。
+- What was actually implemented;
+- Which tests failed before the fix;
+- Which tests passed after the fix;
+- Whether any residual limitations or compatibility effects remain;
+- The actual results of Note validation, builds, type checking, and tests.
 
-由负责人选择接受、要求修改或撤回。
+The owner chooses whether to accept, request revisions, or withdraw the implementation.
 
-### 阶段 F：迁移到 implemented
+### Stage F: Move to Implemented
 
-验收通过后，同时移动三件套，并同步修改正文：
+After acceptance, move all three files together and update the body in sync:
 
 ```text
 Proposal             -> Decision
@@ -287,75 +306,75 @@ Acceptance criteria  -> Verification
 Risks                -> Consequences
 ```
 
-将计划语气改成当前事实，写入真实验证结果，然后重新计算两种语言的 Git blob hash。
+Change planned language into current facts, record real verification results, and then recalculate the Git blob hashes for both languages.
 
-迁移后检查旧 lifecycle 是否残留同名文件。某些文件移动工具可能复制目标但保留源文件，因此门禁必须拒绝跨生命周期同名主题。
+After the move, check whether files with the same name remain in the old lifecycle. Some file-moving tools may copy to the destination while leaving the source behind, so the gate must reject duplicate topics across lifecycles.
 
-## 7. 需求变化流程
+## 7. Requirement Change Process
 
-implemented 中的需求发生变化时，先分类变化规模。
+When a requirement in an implemented Note changes, first classify the scale of the change.
 
-### 纯文档修正
+### Documentation-Only Correction
 
-拼写、链接或不改变语义的澄清，可以同步修改中英文和一致性记录，无需新决策。
+Spelling, links, or clarifications that do not change semantics may update the English, Chinese, and consistency record together without a new decision.
 
-### 兼容性扩展
+### Compatible Extension
 
-旧规则继续有效，只增加独立能力：创建新的 feature Note。旧 Note 和新 Note 同时保持 implemented。
+If the old rule remains valid and only an independent capability is added, create a new feature Note. Both the old and new Notes remain implemented.
 
-### 部分取代
+### Partial Supersession
 
-新 Note 只改变旧 Note 的部分规则：
+If a new Note changes only part of an old Note's rules:
 
-- 新 Note 明确指出取代哪一条规则；
-- 旧 Note 保持 implemented；
-- 旧 Note 添加部分 superseded 链接；
-- 仍有效的其他规则继续由旧 Note 持有。
+- The new Note explicitly identifies which rule it supersedes;
+- The old Note remains implemented;
+- The old Note adds a partial supersession link;
+- The old Note continues to own all other rules that remain valid.
 
-### 完整取代
+### Full Supersession
 
-新决策接管旧决策全部职责，实施并验收后：
+When a new decision takes over all responsibilities of an old decision, after implementation and acceptance:
 
-1. 新 Note 进入 implemented；
-2. 修复所有当前权威链接；
-3. 旧 Note 三件套进入 archived；
-4. 更新归档 manifest；
-5. 再次运行完整门禁。
+1. Move the new Note to implemented;
+2. Fix all current authoritative links;
+3. Move the old Note triplet to archived;
+4. Update the archive manifest;
+5. Run the complete gate again.
 
-在新方案真正实施前，不要提前归档旧 Note，否则会产生“旧规则退出、新规则尚未交付”的权威空窗。
+Do not archive the old Note before the new solution is actually implemented. Doing so creates an authority gap in which the old rule has retired but the new rule has not yet been delivered.
 
-## 8. Rejected 方案重新提出
+## 8. Re-Proposing a Rejected Solution
 
-旧 rejected Note 永远保留当时的否决结论。如果后来前置条件改变：
+An old rejected Note permanently retains the rejection decision made at that time. If the prerequisites later change:
 
-1. 阅读旧 Note 的问题、替代方案和否决原因；
-2. 创建新的 proposed Note；
-3. 链接旧 rejected Note；
-4. 明确哪些前置条件已经变化；
-5. 设计符合当前架构的新语义；
-6. 重新完成批准、实施和验收。
+1. Read the old Note's problem, alternatives, and reason for rejection;
+2. Create a new proposed Note;
+3. Link to the old rejected Note;
+4. State which prerequisites have changed;
+5. Design new semantics that fit the current architecture;
+6. Complete approval, implementation, and acceptance again.
 
-可以重新使用旧想法，但不能直接复用旧决策状态。
+An old idea may be reused, but its old decision status must not be reused directly.
 
-## 9. 归档流程
+## 9. Archiving Process
 
-只有 implemented Note 可以归档。归档前确认：
+Only an implemented Note may be archived. Before archiving, confirm that:
 
-- 核心规则已被新的 implemented Note 完整接管；
-- 当前代码和测试不再依赖旧行为；
-- 所有入站链接已更新；
-- 三文件组完整且配对一致。
+- The core rules have been fully taken over by a new implemented Note;
+- Current code and tests no longer depend on the old behavior;
+- All inbound links have been updated;
+- The three-file group is complete and consistently paired.
 
-归档时：
+When archiving:
 
-1. 英文和中文增加相同的 `Archived: YYYY-MM-DD`；
-2. 更新双方 Git blob hash；
-3. 三个文件一起移到 `archived/{class}/`；
-4. 为三个文件分别计算原始 SHA-256；
-5. 将三条摘要写入 `archived/manifest.json`；
-6. 运行归档冻结门禁。
+1. Add the same `Archived: YYYY-MM-DD` to the English and Chinese files;
+2. Update both Git blob hashes;
+3. Move all three files together to `archived/{class}/`;
+4. Calculate the raw SHA-256 of each of the three files;
+5. Write all three digests to `archived/manifest.json`;
+6. Run the archive immutability gate.
 
-示例 manifest：
+Example manifest:
 
 ```json
 {
@@ -365,11 +384,11 @@ implemented 中的需求发生变化时，先分类变化规模。
 }
 ```
 
-归档后不要编辑。如果需要重新采用旧能力，创建新 proposed Note，并引用归档记录作为历史输入。
+Do not edit files after archiving. To adopt an old capability again, create a new proposed Note and reference the archived record as historical input.
 
-## 10. 推荐门禁
+## 10. Recommended Gates
 
-项目至少应提供一个统一检查命令，例如：
+The project should provide at least one unified check command, for example:
 
 ```json
 {
@@ -380,25 +399,25 @@ implemented 中的需求发生变化时，先分类变化规模。
 }
 ```
 
-Note 校验器至少检查：
+The Note validator should check at least the following:
 
-- 生命周期和类别属于封闭集合；
-- 每个英文 Note 都有中文与一致性记录；
-- 不存在孤立 `.zh.md` 或 `.i18n.yaml`；
-- 中英文状态匹配所在生命周期；
-- 双方包含对应的必需章节；
-- 双向语言切换链接存在；
-- Git blob hash 匹配一致性记录；
-- 标题、代码块和链接结构一致；
-- 同一主题不能跨生命周期重复；
-- archived 三件套与 manifest 的 SHA-256 一致；
-- manifest 不包含已不存在文件的条目。
+- Lifecycles and classes belong to closed sets;
+- Every English Note has a Chinese counterpart and a consistency record;
+- No orphaned `.zh.md` or `.i18n.yaml` files exist;
+- English and Chinese statuses match their lifecycle locations;
+- Both sides contain corresponding required sections;
+- Bidirectional language switch links exist;
+- Git blob hashes match the consistency record;
+- Heading, code block, and link structures match;
+- The same topic does not appear in multiple lifecycles;
+- Archived triplets match the SHA-256 values in the manifest;
+- The manifest contains no entries for files that no longer exist.
 
-推荐在 CI 和本地提交前运行统一 `check`。门禁失败时修复实际不一致，不要直接刷新 hash 来掩盖未同步翻译。
+Run the unified `check` in CI and before local commits. When a gate fails, fix the actual inconsistency instead of merely refreshing hashes to conceal an unsynchronized translation.
 
-## 11. 可复制的 AGENTS.md 基线
+## 11. Reusable AGENTS.md Baseline
 
-新项目可以从以下规则开始，再按技术栈补充构建和测试命令：
+A new project can begin with the following rules, then add build and test commands for its technology stack:
 
 ```markdown
 # AGENTS.md
@@ -409,7 +428,7 @@ This repository uses an Agent Note driven development workflow.
 - Maintain each Agent Note as an equal-authority English `.md`, Simplified Chinese `.zh.md`, and `.i18n.yaml` Git blob hash record.
 - Start undecided work in `proposed/`; do not change product code before proposal approval.
 - Move a Note to `implemented/` only after implementation, focused checks, complete checks, and human acceptance.
-- Move all three pair files together across lifecycles.
+- Move all three files together across lifecycles.
 - Never rewrite an old Note into a different decision; create a new Note and link supersession explicitly.
 - Keep rejected decisions as history when their rationale prevents a likely mistake.
 - Archived triplets are frozen and must match `.agents/notes/archived/manifest.json`.
@@ -417,9 +436,9 @@ This repository uses an Agent Note driven development workflow.
 - Run the project check command before implementation review and after every lifecycle migration.
 ```
 
-## 12. Proposed Note 模板
+## 12. Proposed Note Template
 
-英文：
+English:
 
 ```markdown
 # Agent Note: <title>
@@ -449,7 +468,7 @@ English | [中文](yyyy-mm-dd-topic.zh.md)
 <Tradeoffs, compatibility impact, and intentional omissions.>
 ```
 
-中文：
+Chinese:
 
 ```markdown
 # Agent Note：<标题>
@@ -479,7 +498,7 @@ Status: proposed
 <取舍、兼容性影响和有意不做的范围。>
 ```
 
-## 13. Implemented Note 模板
+## 13. Implemented Note Template
 
 ```markdown
 # Agent Note: <title>
@@ -509,41 +528,41 @@ English | [中文](yyyy-mm-dd-topic.zh.md)
 <Benefits, costs, remaining limits, and compatibility effects.>
 ```
 
-中文文件使用 `问题 / 决策 / 考虑过的替代方案 / 验证 / 后果` 的镜像章节。
+The Chinese file uses the mirrored sections `问题 / 决策 / 考虑过的替代方案 / 验证 / 后果`.
 
-## 14. 新项目接入清单
+## 14. New Project Adoption Checklist
 
-1. 创建 `.agents/notes/{proposed,implemented,rejected,archived}`；
-2. 在每个生命周期下创建六种类别目录；
-3. 创建 `archived/manifest.json`，初始内容为 `{}`；
-4. 将本页的 `AGENTS.md` 基线加入项目；
-5. 添加 Note 配对与归档校验脚本；
-6. 将 `verify:notes` 接入项目统一检查命令；
-7. 用一个小型真实需求走完 proposed 到 implemented；
-8. 用一个真实缺陷演示 bug-fix 的红绿测试；
-9. 在出现完整取代时再演示 archived，不为展示目录而人为归档仍有价值的决策；
-10. 让项目负责人实际参与提案批准和实施验收。
+1. Create `.agents/notes/{proposed,implemented,rejected,archived}`;
+2. Create all six class directories under each lifecycle;
+3. Create `archived/manifest.json` with initial content `{}`;
+4. Add the `AGENTS.md` baseline from this page to the project;
+5. Add a Note pairing and archive validation script;
+6. Integrate `verify:notes` into the project's unified check command;
+7. Take one small, real requirement from proposed through implemented;
+8. Use a real defect to demonstrate the red-green testing process for a bug-fix;
+9. Demonstrate archived only when full supersession occurs; do not artificially archive a decision that remains valuable merely to populate the directory;
+10. Have the project owner actually participate in proposal approval and implementation acceptance.
 
-## 15. 最终判断规则
+## 15. Final Decision Rules
 
-遇到新工作时，可以按以下顺序判断：
+For new work, make decisions in the following order:
 
 ```text
-是否改变行为、结构、流程或测试策略？
-	否 -> 机械修改，可以不写 Note
-	是 -> 是否已有 implemented Note 承诺该行为？
-				 是，但实现不符合 -> bug-fix
-				 否，需要增加能力 -> feature
-				 只删除机制且不增加能力 -> simplification
-				 改变源码结构职责 -> architecture
-				 改变开发工具或工作流 -> process
-				 改变测试基础设施或策略 -> testing
+Does it change behavior, structure, process, or testing strategy?
+	No -> mechanical change; a Note may be omitted
+	Yes -> Does an implemented Note already promise the behavior?
+				 Yes, but the implementation does not conform -> bug-fix
+				 No, a new capability is required -> feature
+				 It only removes mechanisms without adding capabilities -> simplification
+				 It changes source-code structure or responsibilities -> architecture
+				 It changes development tools or workflows -> process
+				 It changes test infrastructure or strategy -> testing
 
-决策是否已经批准并交付？
-	否 -> proposed
-	是 -> implemented
-	被否决 -> rejected
-	曾交付但不再指导当前项目 -> archived
+Has the decision been approved and delivered?
+	No -> proposed
+	Yes -> implemented
+	It was declined -> rejected
+	It was delivered but no longer guides the current project -> archived
 ```
 
-这套流程的目标是让 Agent 提高实现速度的同时，不绕过人的产品判断，也不牺牲项目决策的可追溯性。
+The goal of this workflow is to let Agents increase implementation speed without bypassing human product judgment or sacrificing the traceability of project decisions.

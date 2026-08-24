@@ -37,6 +37,18 @@ function gitBlobHash(text) {
   return createHash('sha1').update(`blob ${content.length}\0`).update(content).digest('hex')
 }
 
+function parseConsistencyRecord(text, expectedKeys) {
+  const record = new Map()
+  for (const line of text.split(/\r?\n/)) {
+    if (line === '' || line.startsWith('#')) continue
+    const match = /^([^:#]+\.md): ([0-9a-f]{40})$/.exec(line)
+    if (match === null || record.has(match[1])) return undefined
+    record.set(match[1], match[2])
+  }
+  if (record.size !== expectedKeys.length || expectedKeys.some(key => !record.has(key))) return undefined
+  return record
+}
+
 function sha256(text) {
   return createHash('sha256').update(text).digest('hex')
 }
@@ -84,14 +96,15 @@ for (const sourceFile of sources) {
   pairedPaths.add(zhPath)
   pairedPaths.add(recordPath)
 
-  let record
-  try {
-    record = JSON.parse(recordText)
-  } catch {
-    throw new Error(`${recordPath}: consistency record must use JSON-compatible YAML`)
+  const sourceName = basename(sourceFile)
+  const zhName = basename(zhFile)
+  const expectedKeys = [sourceName, zhName]
+  const record = parseConsistencyRecord(recordText, expectedKeys)
+  if (record === undefined) {
+    throw new Error(`${recordPath}: consistency record must use canonical YAML mappings`)
   }
-  if (record[basename(sourceFile)] !== gitBlobHash(sourceText)
-    || record[basename(zhFile)] !== gitBlobHash(zhText)) {
+  if (record.get(sourceName) !== gitBlobHash(sourceText)
+    || record.get(zhName) !== gitBlobHash(zhText)) {
     throw new Error(`${recordPath}: translation pair hash mismatch`)
   }
 

@@ -1,0 +1,5 @@
+# Bilingual-pair consistency record: the git blob hash of each side as of the
+# last confirmed-consistent state. Both languages carry equal authority.
+# After editing either side, review both documents and update both hashes.
+2026-08-24-repository-document-i18n-gate.md: 55131267e2ada9f2de46883432b55a3b27abe167
+2026-08-24-repository-document-i18n-gate.zh.md: 8f307ac02f08135c6a28c432578ba9f9dac75d86

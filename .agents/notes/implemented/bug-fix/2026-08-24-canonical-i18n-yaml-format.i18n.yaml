@@ -1,0 +1,4 @@
+# Bilingual-pair consistency record: the git blob hash of each side as of the
+# last confirmed-consistent state. Both languages carry equal authority.
+2026-08-24-canonical-i18n-yaml-format.md: 25afaf52514a95ea5e35a86c06e2391b45dd7bfb
+2026-08-24-canonical-i18n-yaml-format.zh.md: 248358bfb6b04cd6de6dab471f3ca6d451a755e0

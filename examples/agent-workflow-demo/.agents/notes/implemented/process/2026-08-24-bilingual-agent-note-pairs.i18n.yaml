@@ -1,4 +1,6 @@
-{
-	"2026-08-24-bilingual-agent-note-pairs.md": "5bce2ad01edb509dea7fda79c5be767660ee1ff5",
-	"2026-08-24-bilingual-agent-note-pairs.zh.md": "5e8f6ef777482b7dd383f1842c1043ec21709603"
-}
+# Bilingual-pair consistency record: the git blob hash of each side as of the
+# last confirmed-consistent state. Both languages carry equal authority.
+# After editing either side, review both documents, update both hashes, and run:
+#   npm run verify:notes
+2026-08-24-bilingual-agent-note-pairs.md: 5bce2ad01edb509dea7fda79c5be767660ee1ff5
+2026-08-24-bilingual-agent-note-pairs.zh.md: 5e8f6ef777482b7dd383f1842c1043ec21709603
