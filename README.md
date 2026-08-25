@@ -424,6 +424,8 @@ A new project can begin with the following rules, then add build and test comman
 
 This repository uses an Agent Note driven development workflow.
 
+Agent Note workflow adapted from [ai-agent-note-workflow](https://github.com/zhangleio/ai-agent-note-workflow); local project rules take precedence.
+
 - Record every non-trivial behavioral, architectural, process, or testing decision in `.agents/notes`.
 - Maintain each Agent Note as an equal-authority English `.md`, Simplified Chinese `.zh.md`, and `.i18n.yaml` Git blob hash record.
 - Start undecided work in `proposed/`; do not change product code before proposal approval.
@@ -543,6 +545,8 @@ The Chinese file uses the mirrored sections `问题 / 决策 / 考虑过的替�
 9. Demonstrate archived only when full supersession occurs; do not artificially archive a decision that remains valuable merely to populate the directory;
 10. Have the project owner actually participate in proposal approval and implementation acceptance.
 
+The provenance sentence in the baseline is informational only. It creates no runtime dependency, telemetry, network request, automatic update check, CI requirement, console output, badge, or obligation to track upstream changes. Downstream projects remain independent, and their local rules take precedence.
+
 ## 15. Final Decision Rules
 
 For new work, make decisions in the following order:
@@ -566,3 +570,7 @@ Has the decision been approved and delivered?
 ```
 
 The goal of this workflow is to let Agents increase implementation speed without bypassing human product judgment or sacrificing the traceability of project decisions.
+
+## 16. Acknowledgements
+
+This project was inspired by the traceable development practices in [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness). It independently adapts those ideas into a reusable Agent Note driven workflow and is not affiliated with or endorsed by DeepSeek.

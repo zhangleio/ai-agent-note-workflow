@@ -424,6 +424,8 @@ Note 校验器至少检查：
 
 This repository uses an Agent Note driven development workflow.
 
+Agent Note workflow adapted from [ai-agent-note-workflow](https://github.com/zhangleio/ai-agent-note-workflow); local project rules take precedence.
+
 - Record every non-trivial behavioral, architectural, process, or testing decision in `.agents/notes`.
 - Maintain each Agent Note as an equal-authority English `.md`, Simplified Chinese `.zh.md`, and `.i18n.yaml` Git blob hash record.
 - Start undecided work in `proposed/`; do not change product code before proposal approval.
@@ -543,6 +545,8 @@ English | [中文](yyyy-mm-dd-topic.zh.md)
 9. 在出现完整取代时再演示 archived，不为展示目录而人为归档仍有价值的决策；
 10. 让项目负责人实际参与提案批准和实施验收。
 
+基线中的来源声明仅用于提供信息，不会引入运行时依赖、遥测、网络请求、自动更新检查、CI 要求、控制台输出、徽章，也不要求跟踪上游变化。下游项目保持独立，并以本地规则为准。
+
 ## 15. 最终判断规则
 
 遇到新工作时，可以按以下顺序判断：
@@ -566,3 +570,7 @@ English | [中文](yyyy-mm-dd-topic.zh.md)
 ```
 
 这套流程的目标是让 Agent 提高实现速度的同时，不绕过人的产品判断，也不牺牲项目决策的可追溯性。
+
+## 16. 致谢
+
+本项目受到 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) 中可追溯开发实践的启发，并独立将相关理念整理为一套可复用的 Agent Note 驱动工作流。本项目与 DeepSeek 不存在隶属关系，也不代表 DeepSeek 官方立场或获得其官方背书。

@@ -1,0 +1,4 @@
+# Bilingual-pair consistency record: the git blob hash of each side as of the
+# last confirmed-consistent state. Both languages carry equal authority.
+2026-08-25-deepseek-harness-acknowledgement.md: 23703c0bc0e1d06af1ed7b20fe3e4c333c0c10ab
+2026-08-25-deepseek-harness-acknowledgement.zh.md: d420b7a178a932bc38a19a40d3b8c2df91c65ad7

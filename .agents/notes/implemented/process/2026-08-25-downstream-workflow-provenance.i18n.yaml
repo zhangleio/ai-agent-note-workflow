@@ -1,0 +1,4 @@
+# Bilingual-pair consistency record: the git blob hash of each side as of the
+# last confirmed-consistent state. Both languages carry equal authority.
+2026-08-25-downstream-workflow-provenance.md: 3cd425ab9294d39e0d731a3ab3b7646deb8560d5
+2026-08-25-downstream-workflow-provenance.zh.md: 72ec2c843fa1f2e1829b582149fbd09ea41cc0ce
