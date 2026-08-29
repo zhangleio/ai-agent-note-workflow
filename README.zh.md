@@ -66,13 +66,14 @@ Agent 可以调查、提出方案、实施和验证，但以下节点由项目�
 				└── ...同样的类别目录
 ```
 
-每份 Note 的路径格式为：
+每份 Note 使用带日期的主题基名。英文使用无后缀 Markdown 名称，中文增加 `.zh`：
 
 ```text
 {lifecycle}/{class}/yyyy-mm-dd-topic.md
+{lifecycle}/{class}/yyyy-mm-dd-topic.zh.md
 ```
 
-日期表示主题第一次被提出的日期。生命周期迁移时文件名中的日期不变。
+配置的起草模式决定 `proposed/` 下存在哪条路径；锁定双语生命周期同时使用两条路径。日期表示主题第一次被提出的日期。生命周期迁移时文件名中的日期不变。
 
 ## 3. 生命周期
 
@@ -151,9 +152,34 @@ Bug-fix 必须先添加一个必然失败的回归测试，记录修复前的失
 
 Simplification 必须证明外部能力没有意外变化，通常依靠既有测试以及针对被删除路径的验证。
 
-## 5. 双语三文件组
+## 5. Proposed 起草模式与锁定双语三件套
 
-每份 Agent Note 由同目录三件套组成：
+每个项目在 `.agents/agent-note-workflow.json` 中选择 proposed Note 起草策略：
+
+```json
+{
+  "version": 1,
+  "proposedMode": "bilingual"
+}
+```
+
+新项目显式选择下列值之一。缺少配置的项目保留 `bilingual` 作为兼容默认值：
+
+| `proposedMode` | 位于 `proposed/` 时的文件 |
+| --- | --- |
+| `bilingual` | 英文 `.md`、中文 `.zh.md` 和带真实 hash 的 `.i18n.yaml` |
+| `zh-only` | 仅简体中文 `.zh.md` |
+| `en-only` | 仅英文 `.md` |
+
+### Proposed 起草形态
+
+所选模式作用于整个项目。单语 proposed Note 不包含语言切换链接、占位翻译、`.i18n.yaml` sidecar 或 `pending` hash。任何 Note 迁移到 `implemented/`、`rejected/` 或 `archived/` 前，都要补齐另一种语言、增加双向语言切换链接、评审语义等价性，并用真实 hash 创建一致性记录。
+
+存在活跃提案时修改 `proposedMode`，必须在同一变更中把全部 proposed Note 迁移为新文件形态。校验器拒绝混合或多余的 proposed 文件，而不是逐份 Note 推断模式。
+
+### 锁定双语三件套
+
+`proposed/` 之外的每份 Note，以及 `bilingual` 模式下的每份提案，都由同目录三件套组成：
 
 ```text
 topic.md
@@ -163,7 +189,7 @@ topic.i18n.yaml
 
 ### 同等权威
 
-英文和简体中文具有同等权威。任一语言都可以先起草，但另一侧必须在同一变更中同步，不能把中文定义为可选翻译。
+锁定三件套中的英文和简体中文具有同等权威。任一语言都可以先编辑，但另一侧必须在同一变更中同步，不能把中文定义为可选翻译。
 
 英文文件在状态块后添加：
 
@@ -243,7 +269,9 @@ node scripts/verify-doc-i18n.mjs
 
 ### 阶段 B：建立 proposed Note
 
-同时创建三件套，正文至少包含：
+读取 `.agents/agent-note-workflow.json`，按 `proposedMode` 所选形态创建文件。`bilingual` 模式同时创建并锁定三件套；`en-only` 或 `zh-only` 模式只创建所选 Markdown 文件，把另一种语言和一致性记录推迟到 Note 离开 `proposed/` 时补齐。
+
+英文正文存在时至少包含：
 
 ```markdown
 ## Problem
@@ -253,7 +281,7 @@ node scripts/verify-doc-i18n.mjs
 ## Risks
 ```
 
-中文对侧使用等价章节：
+中文正文存在时使用等价章节：
 
 ```markdown
 ## 问题
@@ -401,9 +429,11 @@ implemented 中的需求发生变化时，先分类变化规模。
 
 Note 校验器至少检查：
 
+- 版本化项目配置包含受支持的 `proposedMode`，缺少配置时采用双语兼容默认值；
 - 生命周期和类别属于封闭集合；
-- 每个英文 Note 都有中文与一致性记录；
-- 不存在孤立 `.zh.md` 或 `.i18n.yaml`；
+- proposed 文件符合项目级所选模式，不存在混合或多余文件；
+- `proposed/` 之外的每份 Note 和每份双语提案都有英文、中文和一致性记录；
+- 不存在孤立或与模式不兼容的 `.md`、`.zh.md` 或 `.i18n.yaml`；
 - 中英文状态匹配所在生命周期；
 - 双方包含对应的必需章节；
 - 双向语言切换链接存在；
@@ -412,6 +442,8 @@ Note 校验器至少检查：
 - 同一主题不能跨生命周期重复；
 - archived 三件套与 manifest 的 SHA-256 一致；
 - manifest 不包含已不存在文件的条目。
+
+仓库中的规范零依赖实现是 `scripts/verify-agent-notes.mjs`。配置与兼容校验器必须一起复制；只修改配置不能升级旧版复制校验器。本仓库使用 `node --test scripts/verify-agent-notes.test.mjs` 测试校验器。
 
 必须在 CI 和本地提交前运行统一 `check`。门禁失败时修复实际不一致，不要直接刷新 hash 来掩盖未同步翻译。
 
@@ -427,10 +459,11 @@ This repository uses an Agent Note driven development workflow.
 Agent Note workflow adapted from [ai-agent-note-workflow](https://github.com/zhangleio/ai-agent-note-workflow); local project rules take precedence.
 
 - Record every non-trivial behavioral, architectural, process, or testing decision in `.agents/notes`.
-- Maintain each Agent Note as an equal-authority English `.md`, Simplified Chinese `.zh.md`, and `.i18n.yaml` Git blob hash record.
+- Read `.agents/agent-note-workflow.json` before creating a proposed Note, and use its project-wide `proposedMode` file shape.
+- Before a Note leaves `proposed/`, complete an equal-authority English `.md`, Simplified Chinese `.zh.md`, and `.i18n.yaml` record with real Git blob hashes.
 - Start undecided work in `proposed/`; do not change product code before proposal approval.
 - Move a Note to `implemented/` only after implementation, focused checks, complete checks, and human acceptance.
-- Move all three files together across lifecycles.
+- Move all three locked files together outside `proposed/`.
 - Never rewrite an old Note into a different decision; create a new Note and link supersession explicitly.
 - Keep rejected decisions as history when their rationale prevents a likely mistake.
 - Archived triplets are frozen and must match `.agents/notes/archived/manifest.json`.
@@ -439,6 +472,8 @@ Agent Note workflow adapted from [ai-agent-note-workflow](https://github.com/zha
 ```
 
 ## 12. Proposed Note 模板
+
+`bilingual` 模式创建下面两份模板并保留语言切换链接；`en-only` 只创建英文模板并移除其中的语言切换链接；`zh-only` 只创建中文模板并移除其中的语言切换链接。单语提案在生命周期迁移前补齐锁定三件套时再增加双方切换链接。
 
 英文：
 
@@ -537,13 +572,14 @@ English | [中文](yyyy-mm-dd-topic.zh.md)
 1. 创建 `.agents/notes/{proposed,implemented,rejected,archived}`；
 2. 在每个生命周期下创建六种类别目录；
 3. 创建 `archived/manifest.json`，初始内容为 `{}`；
-4. 将本页的 `AGENTS.md` 基线加入项目；
-5. 添加 Note 配对与归档校验脚本；
-6. 将 `verify:notes` 接入项目统一检查命令；
-7. 用一个小型真实需求走完 proposed 到 implemented；
-8. 用一个真实缺陷演示 bug-fix 的红绿测试；
-9. 在出现完整取代时再演示 archived，不为展示目录而人为归档仍有价值的决策；
-10. 让项目负责人实际参与提案批准和实施验收。
+4. 创建 `.agents/agent-note-workflow.json`，显式选择 `bilingual`、`zh-only` 或 `en-only`；
+5. 将本页的 `AGENTS.md` 基线加入项目；
+6. 复制规范 `scripts/verify-agent-notes.mjs`，或添加兼容的 Note 配对与归档校验器；
+7. 将 `verify:notes` 接入项目统一检查命令；
+8. 用一个小型真实需求走完 proposed 到 implemented；
+9. 用一个真实缺陷演示 bug-fix 的红绿测试；
+10. 在出现完整取代时再演示 archived，不为展示目录而人为归档仍有价值的决策；
+11. 让项目负责人实际参与提案批准和实施验收。
 
 基线中的来源声明仅用于提供信息，不会引入运行时依赖、遥测、网络请求、自动更新检查、CI 要求、控制台输出、徽章，也不要求跟踪上游变化。下游项目保持独立，并以本地规则为准。
 

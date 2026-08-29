@@ -4,6 +4,8 @@
 
 本目录提供两个可以独立安装、构建和测试的 Agent Note 工作流示例，适合作为创建新项目时的结构参考。
 
+两个示例都在 `.agents/agent-note-workflow.json` 中显式选择 `bilingual`，并各自保留一份项目本地的规范可配置 Note 校验器。根校验器测试 `bilingual`、`zh-only` 和 `en-only`；示例保持双语历史，不改写既有生命周期记录。
+
 本索引是受管双语文档。必须在同一变更中更新[英文对应文档](README.md)，刷新 `README.i18n.yaml` 后，从本目录运行 `node ../scripts/verify-doc-i18n.mjs`。
 
 ## agent-workflow-demo

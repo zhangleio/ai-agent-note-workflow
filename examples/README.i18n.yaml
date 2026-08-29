@@ -2,5 +2,5 @@
 # last confirmed-consistent state. Both languages carry equal authority.
 # After editing either side, review both documents, update both hashes, and run:
 #   node ../scripts/verify-doc-i18n.mjs
-README.md: 55fd4a5407e3f95708b2008389d383978eec39e3
-README.zh.md: 52964bac51ec37cf4c6a21637242a6d65ad2e7e0
+README.md: d8eb96d15cb7aec6f80b151806ab53d675ae2ecd
+README.zh.md: 6775333100207bd5e3c5adc2e3a26fb40898e33c

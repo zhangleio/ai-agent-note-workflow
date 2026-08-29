@@ -4,6 +4,8 @@ English | [简体中文](README.zh.md)
 
 This directory contains two independently installable, buildable, and testable Agent Note workflow examples. Use them as structural references when creating a new project.
 
+Both examples explicitly select `bilingual` in `.agents/agent-note-workflow.json` and carry a project-local copy of the canonical configurable Note verifier. The root verifier tests `bilingual`, `zh-only`, and `en-only`; the examples keep bilingual history so their existing lifecycle records remain unchanged.
+
 This index is a governed bilingual document. Update [the Chinese counterpart](README.zh.md) in the same change and run `node ../scripts/verify-doc-i18n.mjs` from this directory after refreshing `README.i18n.yaml`.
 
 ## agent-workflow-demo

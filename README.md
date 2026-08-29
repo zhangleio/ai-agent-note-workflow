@@ -66,13 +66,14 @@ Lifecycles, required sections, bilingual pairing, duplicate topics, and archive 
 				└── ...the same class directories
 ```
 
-Each Note uses the following path format:
+Each Note uses a dated topic basename. English uses the unsuffixed Markdown name and Chinese adds `.zh`:
 
 ```text
 {lifecycle}/{class}/yyyy-mm-dd-topic.md
+{lifecycle}/{class}/yyyy-mm-dd-topic.zh.md
 ```
 
-The date is when the topic was first proposed. It does not change when the file moves between lifecycles.
+The configured draft mode determines which path exists under `proposed/`; locked bilingual lifecycles use both. The date is when the topic was first proposed. It does not change when the file moves between lifecycles.
 
 ## 3. Lifecycles
 
@@ -151,9 +152,34 @@ For a bug-fix, first add a regression test that is guaranteed to fail, record th
 
 A simplification must prove that external capabilities did not change unintentionally, usually through existing tests plus verification focused on the removed path.
 
-## 5. Bilingual Three-File Groups
+## 5. Proposed Draft Modes and Locked Bilingual Triplets
 
-Each Agent Note consists of three files in the same directory:
+Each project selects its proposed Note drafting policy in `.agents/agent-note-workflow.json`:
+
+```json
+{
+  "version": 1,
+  "proposedMode": "bilingual"
+}
+```
+
+New projects explicitly choose one of the following values. A project without the configuration retains `bilingual` as a compatibility default:
+
+| `proposedMode` | Files while under `proposed/` |
+| --- | --- |
+| `bilingual` | English `.md`, Chinese `.zh.md`, and `.i18n.yaml` with real hashes |
+| `zh-only` | Simplified Chinese `.zh.md` only |
+| `en-only` | English `.md` only |
+
+### Proposed Draft Shapes
+
+The selected mode is project-wide. A monolingual proposed Note has no language switcher, placeholder translation, `.i18n.yaml` sidecar, or `pending` hash. Before any Note moves to `implemented/`, `rejected/`, or `archived/`, complete the other language, add reciprocal language switchers, review semantic equivalence, and create the consistency record with real hashes.
+
+Changing `proposedMode` while active proposals exist requires migrating every proposed Note to the new file shape in the same change. The verifier rejects mixed or extra proposed artifacts instead of inferring a mode per Note.
+
+### Locked Bilingual Triplets
+
+Every Note outside `proposed/`, and every proposal in `bilingual` mode, consists of three files in the same directory:
 
 ```text
 topic.md
@@ -163,7 +189,7 @@ topic.i18n.yaml
 
 ### Equal Authority
 
-English and Simplified Chinese have equal authority. Either language may be drafted first, but the other side must be synchronized in the same change. Chinese must not be treated as an optional translation.
+English and Simplified Chinese in a locked triplet have equal authority. Either language may be edited first, but the other side must be synchronized in the same change. Chinese must not be treated as an optional translation.
 
 After the status block, the English file adds:
 
@@ -243,7 +269,9 @@ This zero-dependency gate checks the three records, reciprocal language switcher
 
 ### Stage B: Create a Proposed Note
 
-Create all three files together. The body must include at least:
+Read `.agents/agent-note-workflow.json` and create the file shape selected by `proposedMode`. In `bilingual` mode, create and lock all three files together. In `en-only` or `zh-only` mode, create only the selected Markdown file and defer the other language and consistency record until the Note leaves `proposed/`.
+
+The English body, when present, must include at least:
 
 ```markdown
 ## Problem
@@ -253,7 +281,7 @@ Create all three files together. The body must include at least:
 ## Risks
 ```
 
-The Chinese counterpart uses equivalent sections:
+The Chinese body, when present, uses equivalent sections:
 
 ```markdown
 ## 问题
@@ -401,9 +429,11 @@ The project should provide at least one unified check command, for example:
 
 The Note validator should check at least the following:
 
+- The versioned project configuration contains a supported `proposedMode`, with missing configuration treated as the bilingual compatibility default;
 - Lifecycles and classes belong to closed sets;
-- Every English Note has a Chinese counterpart and a consistency record;
-- No orphaned `.zh.md` or `.i18n.yaml` files exist;
+- Proposed files match the selected project-wide mode without mixed or extra artifacts;
+- Every Note outside `proposed/`, and every bilingual proposal, has an English file, Chinese counterpart, and consistency record;
+- No orphaned or mode-incompatible `.md`, `.zh.md`, or `.i18n.yaml` files exist;
 - English and Chinese statuses match their lifecycle locations;
 - Both sides contain corresponding required sections;
 - Bidirectional language switch links exist;
@@ -412,6 +442,8 @@ The Note validator should check at least the following:
 - The same topic does not appear in multiple lifecycles;
 - Archived triplets match the SHA-256 values in the manifest;
 - The manifest contains no entries for files that no longer exist.
+
+The repository's canonical, zero-dependency implementation is `scripts/verify-agent-notes.mjs`. Copy the configuration and a compatible verifier together; changing only the configuration does not upgrade an older copied validator. This repository tests the verifier with `node --test scripts/verify-agent-notes.test.mjs`.
 
 Run the unified `check` in CI and before local commits. When a gate fails, fix the actual inconsistency instead of merely refreshing hashes to conceal an unsynchronized translation.
 
@@ -427,10 +459,11 @@ This repository uses an Agent Note driven development workflow.
 Agent Note workflow adapted from [ai-agent-note-workflow](https://github.com/zhangleio/ai-agent-note-workflow); local project rules take precedence.
 
 - Record every non-trivial behavioral, architectural, process, or testing decision in `.agents/notes`.
-- Maintain each Agent Note as an equal-authority English `.md`, Simplified Chinese `.zh.md`, and `.i18n.yaml` Git blob hash record.
+- Read `.agents/agent-note-workflow.json` before creating a proposed Note, and use its project-wide `proposedMode` file shape.
+- Before a Note leaves `proposed/`, complete an equal-authority English `.md`, Simplified Chinese `.zh.md`, and `.i18n.yaml` record with real Git blob hashes.
 - Start undecided work in `proposed/`; do not change product code before proposal approval.
 - Move a Note to `implemented/` only after implementation, focused checks, complete checks, and human acceptance.
-- Move all three files together across lifecycles.
+- Move all three locked files together outside `proposed/`.
 - Never rewrite an old Note into a different decision; create a new Note and link supersession explicitly.
 - Keep rejected decisions as history when their rationale prevents a likely mistake.
 - Archived triplets are frozen and must match `.agents/notes/archived/manifest.json`.
@@ -439,6 +472,8 @@ Agent Note workflow adapted from [ai-agent-note-workflow](https://github.com/zha
 ```
 
 ## 12. Proposed Note Template
+
+In `bilingual` mode, create both templates below and keep their language switchers. In `en-only`, create only the English template and omit its language switcher. In `zh-only`, create only the Chinese template and omit its language switcher. Monolingual proposals gain both switchers when the locked triplet is completed before lifecycle migration.
 
 English:
 
@@ -537,13 +572,14 @@ The Chinese file uses the mirrored sections `问题 / 决策 / 考虑过的替�
 1. Create `.agents/notes/{proposed,implemented,rejected,archived}`;
 2. Create all six class directories under each lifecycle;
 3. Create `archived/manifest.json` with initial content `{}`;
-4. Add the `AGENTS.md` baseline from this page to the project;
-5. Add a Note pairing and archive validation script;
-6. Integrate `verify:notes` into the project's unified check command;
-7. Take one small, real requirement from proposed through implemented;
-8. Use a real defect to demonstrate the red-green testing process for a bug-fix;
-9. Demonstrate archived only when full supersession occurs; do not artificially archive a decision that remains valuable merely to populate the directory;
-10. Have the project owner actually participate in proposal approval and implementation acceptance.
+4. Create `.agents/agent-note-workflow.json` and explicitly choose `bilingual`, `zh-only`, or `en-only`;
+5. Add the `AGENTS.md` baseline from this page to the project;
+6. Copy the canonical `scripts/verify-agent-notes.mjs` or add a compatible Note pairing and archive validator;
+7. Integrate `verify:notes` into the project's unified check command;
+8. Take one small, real requirement from proposed through implemented;
+9. Use a real defect to demonstrate the red-green testing process for a bug-fix;
+10. Demonstrate archived only when full supersession occurs; do not artificially archive a decision that remains valuable merely to populate the directory;
+11. Have the project owner actually participate in proposal approval and implementation acceptance.
 
 The provenance sentence in the baseline is informational only. It creates no runtime dependency, telemetry, network request, automatic update check, CI requirement, console output, badge, or obligation to track upstream changes. Downstream projects remain independent, and their local rules take precedence.
 

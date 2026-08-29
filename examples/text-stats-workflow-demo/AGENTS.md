@@ -3,7 +3,8 @@
 This repository uses an Agent Note driven development workflow.
 
 - Record every non-trivial behavioral, architectural, process, or testing decision in `.agents/notes`.
-- Maintain each Agent Note as an equal-authority English `.md`, Simplified Chinese `.zh.md`, and `.i18n.yaml` Git blob hash record.
+- Read `.agents/agent-note-workflow.json` before creating a proposed Note. This example selects `bilingual`.
+- Maintain every Note outside `proposed/`, and every bilingual proposal, as an equal-authority English `.md`, Simplified Chinese `.zh.md`, and `.i18n.yaml` Git blob hash record.
 - Start undecided work in `proposed/`; do not change product code before proposal approval.
 - Move a Note to `implemented/` only after implementation, focused checks, complete checks, and human acceptance.
 - Move all three pair files together across lifecycles.

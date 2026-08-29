@@ -22,7 +22,7 @@ This repository maintains a reusable Agent Note driven development workflow and 
 
 Every non-trivial product behavior, architecture, storage format, protocol, process, or testing strategy change must follow this workflow:
 
-1. Create an English `.md`, Simplified Chinese `.zh.md`, and `.i18n.yaml` consistency record under `.agents/notes/proposed/<class>/`.
+1. Read `.agents/agent-note-workflow.json` before creating a proposed Note. This repository selects `bilingual`, so create an English `.md`, Simplified Chinese `.zh.md`, and `.i18n.yaml` consistency record under `.agents/notes/proposed/<class>/`.
 2. Record the problem, proposal, genuine alternatives, acceptance criteria, and risks.
 3. Do not modify product code before human proposal approval.
 4. After approval, implement in layers and run the smallest focused check that can disprove the current hypothesis after each substantive edit.
@@ -34,7 +34,8 @@ Mechanical changes that may omit an Agent Note include spelling fixes, link repa
 
 ## Note consistency
 
-- English and Chinese Notes have equal authority. Their heading levels, code blocks, and link structures must correspond.
+- The configured `proposedMode` controls only files under `proposed/`. Every Note outside `proposed/` is a locked bilingual triplet.
+- English and Chinese files in a bilingual triplet have equal authority. Their heading levels, code blocks, and link structures must correspond.
 - `.i18n.yaml` records the Git blob SHA-1 of both documents after LF normalization.
 - Active `.i18n.yaml` files must use unquoted `<basename>.md: <40-character-lowercase-hex>` mappings. Only blank lines and `#` comments may appear otherwise; JSON object syntax is invalid.
 - Lifecycle transitions must move the English document, Chinese document, and consistency record together without leaving duplicate topics.
