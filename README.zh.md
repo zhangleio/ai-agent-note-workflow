@@ -1,8 +1,8 @@
-# AI Agent 开发工作流
+# AI Agent 决策记录工作流
 
 [English](README.md) | 简体中文
 
-这是一套适合新项目复用的 **Agent Note 驱动开发工作流**。它通过可评审的决策记录，把需求讨论、方案选择、代码实施、测试验证、需求否决、规则取代和历史归档连接起来。
+**AI Agent 决策记录工作流**（`ai-agent-note-workflow`）是一套适合新项目复用的 Agent Note 驱动开发工作流。它通过可评审的决策记录，把需求讨论、方案选择、代码实施、测试验证、需求否决、规则取代和历史归档连接起来。仓库名和英文术语保持不变。
 
 这套工作流解决的核心问题不是“让 Agent 多写文档”，而是确保以下事实可以被长期追溯：
 
@@ -159,17 +159,17 @@ Simplification 必须证明外部能力没有意外变化，通常依靠既有�
 ```json
 {
   "version": 1,
-  "proposedMode": "bilingual"
+  "proposedMode": "zh-only"
 }
 ```
 
-新项目显式选择下列值之一。缺少配置的项目保留 `bilingual` 作为兼容默认值：
+新项目显式选择以下三种模式之一。中文模式可以减少起草期间的重复工作，因此作为新项目推荐选项。缺少配置的项目仍保留 `bilingual` 作为兼容默认值：
 
-| `proposedMode` | 位于 `proposed/` 时的文件 |
-| --- | --- |
-| `bilingual` | 英文 `.md`、中文 `.zh.md` 和带真实 hash 的 `.i18n.yaml` |
-| `zh-only` | 仅简体中文 `.zh.md` |
-| `en-only` | 仅英文 `.md` |
+| 用户选项 | `proposedMode` | 位于 `proposed/` 时的文件 |
+| --- | --- | --- |
+| 中文模式（推荐） | `zh-only` | 仅简体中文 `.zh.md` |
+| 英文模式 | `en-only` | 仅英文 `.md` |
+| 双语模式 | `bilingual` | 英文 `.md`、中文 `.zh.md` 和带真实 hash 的 `.i18n.yaml` |
 
 ### Proposed 起草形态
 
@@ -569,10 +569,40 @@ English | [中文](yyyy-mm-dd-topic.zh.md)
 
 ## 14. 新项目接入清单
 
+### 可复制的接入提示语
+
+选择其中一条提示语，并把 `<目标项目路径>` 替换为真实项目路径。中文模式是新项目推荐选项；三种模式都会在 Note 离开 `proposed/` 前收敛为锁定双语三件套。
+
+#### 中文模式（推荐）
+
+```text
+请将 AI Agent 决策记录工作流（https://github.com/zhangleio/ai-agent-note-workflow）的规则接入项目 `<目标项目路径>`，proposed 阶段使用中文模式（`zh-only`）。
+
+请遵循上游最新接入说明，创建 `.agents/agent-note-workflow.json`、Agent Note 目录、`AGENTS.md` 规则和兼容校验器，并将 Note 校验接入项目现有的完整检查命令。讨论期间只维护简体中文 `.zh.md`；Note 离开 `proposed/` 前必须补齐等权英文 `.md` 和记录真实 Git blob hash 的 `.i18n.yaml`，再迁移完整三件套。接入工作流时不要改变项目现有业务行为。
+```
+
+#### 英文模式
+
+```text
+请将 AI Agent 决策记录工作流（https://github.com/zhangleio/ai-agent-note-workflow）的规则接入项目 `<目标项目路径>`，proposed 阶段使用英文模式（`en-only`）。
+
+请遵循上游最新接入说明，创建 `.agents/agent-note-workflow.json`、Agent Note 目录、`AGENTS.md` 规则和兼容校验器，并将 Note 校验接入项目现有的完整检查命令。讨论期间只维护英文 `.md`；Note 离开 `proposed/` 前必须补齐等权简体中文 `.zh.md` 和记录真实 Git blob hash 的 `.i18n.yaml`，再迁移完整三件套。接入工作流时不要改变项目现有业务行为。
+```
+
+#### 双语模式
+
+```text
+请将 AI Agent 决策记录工作流（https://github.com/zhangleio/ai-agent-note-workflow）的规则接入项目 `<目标项目路径>`，proposed 阶段使用双语模式（`bilingual`）。
+
+请遵循上游最新接入说明，创建 `.agents/agent-note-workflow.json`、Agent Note 目录、`AGENTS.md` 规则和兼容校验器，并将 Note 校验接入项目现有的完整检查命令。整个 proposed 阶段同时维护等权英文 `.md`、简体中文 `.zh.md` 和记录真实 Git blob hash 的 `.i18n.yaml`。接入工作流时不要改变项目现有业务行为。
+```
+
+### 详细接入清单
+
 1. 创建 `.agents/notes/{proposed,implemented,rejected,archived}`；
 2. 在每个生命周期下创建六种类别目录；
 3. 创建 `archived/manifest.json`，初始内容为 `{}`；
-4. 创建 `.agents/agent-note-workflow.json`，显式选择 `bilingual`、`zh-only` 或 `en-only`；
+4. 创建 `.agents/agent-note-workflow.json`，显式选择中文模式（`zh-only`，推荐）、英文模式（`en-only`）或双语模式（`bilingual`）；
 5. 将本页的 `AGENTS.md` 基线加入项目；
 6. 复制规范 `scripts/verify-agent-notes.mjs`，或添加兼容的 Note 配对与归档校验器；
 7. 将 `verify:notes` 接入项目统一检查命令；

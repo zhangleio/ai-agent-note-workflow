@@ -4,6 +4,8 @@ English | [简体中文](README.zh.md)
 
 This is an **Agent Note driven development workflow** designed for reuse in new projects. Through reviewable decision records, it connects requirement discussions, solution selection, code implementation, test verification, requirement rejection, rule supersession, and historical archiving.
 
+Its recommended Chinese display name is **AI Agent 决策记录工作流**. The repository name `ai-agent-note-workflow` and the English terminology remain unchanged.
+
 The core purpose of this workflow is not to "make the Agent write more documentation," but to ensure that the following facts remain traceable over time:
 
 - Why a change was made;
@@ -159,17 +161,17 @@ Each project selects its proposed Note drafting policy in `.agents/agent-note-wo
 ```json
 {
   "version": 1,
-  "proposedMode": "bilingual"
+  "proposedMode": "zh-only"
 }
 ```
 
-New projects explicitly choose one of the following values. A project without the configuration retains `bilingual` as a compatibility default:
+New projects explicitly choose one of the following three modes. Chinese mode is recommended for new projects because it minimizes drafting churn. A project without the configuration retains `bilingual` as a compatibility default:
 
-| `proposedMode` | Files while under `proposed/` |
-| --- | --- |
-| `bilingual` | English `.md`, Chinese `.zh.md`, and `.i18n.yaml` with real hashes |
-| `zh-only` | Simplified Chinese `.zh.md` only |
-| `en-only` | English `.md` only |
+| User choice | `proposedMode` | Files while under `proposed/` |
+| --- | --- | --- |
+| Chinese mode (Recommended) | `zh-only` | Simplified Chinese `.zh.md` only |
+| English mode | `en-only` | English `.md` only |
+| Bilingual mode | `bilingual` | English `.md`, Chinese `.zh.md`, and `.i18n.yaml` with real hashes |
 
 ### Proposed Draft Shapes
 
@@ -569,10 +571,40 @@ The Chinese file uses the mirrored sections `问题 / 决策 / 考虑过的替�
 
 ## 14. New Project Adoption Checklist
 
+### Copyable Adoption Prompts
+
+Choose one prompt and replace `<target-project-path>` with the real project path. Chinese mode is the recommended new-project choice; all three modes converge on a locked bilingual triplet before a Note leaves `proposed/`.
+
+#### Chinese Mode (Recommended)
+
+```text
+Please adapt the AI Agent Decision Record Workflow (https://github.com/zhangleio/ai-agent-note-workflow) into `<target-project-path>` and select Chinese mode (`zh-only`) for proposed Notes.
+
+Follow the latest upstream adoption instructions. Create `.agents/agent-note-workflow.json`, the Agent Note directories, the `AGENTS.md` rules, and a compatible verifier, then integrate Note verification into the project's existing complete check. During discussion, maintain only the Simplified Chinese `.zh.md`. Before a Note leaves `proposed/`, add the equal-authority English `.md` and `.i18n.yaml` with real Git blob hashes, then migrate the complete triplet. Do not change existing product behavior as part of workflow adoption.
+```
+
+#### English Mode
+
+```text
+Please adapt the AI Agent Decision Record Workflow (https://github.com/zhangleio/ai-agent-note-workflow) into `<target-project-path>` and select English mode (`en-only`) for proposed Notes.
+
+Follow the latest upstream adoption instructions. Create `.agents/agent-note-workflow.json`, the Agent Note directories, the `AGENTS.md` rules, and a compatible verifier, then integrate Note verification into the project's existing complete check. During discussion, maintain only the English `.md`. Before a Note leaves `proposed/`, add the equal-authority Simplified Chinese `.zh.md` and `.i18n.yaml` with real Git blob hashes, then migrate the complete triplet. Do not change existing product behavior as part of workflow adoption.
+```
+
+#### Bilingual Mode
+
+```text
+Please adapt the AI Agent Decision Record Workflow (https://github.com/zhangleio/ai-agent-note-workflow) into `<target-project-path>` and select bilingual mode (`bilingual`) for proposed Notes.
+
+Follow the latest upstream adoption instructions. Create `.agents/agent-note-workflow.json`, the Agent Note directories, the `AGENTS.md` rules, and a compatible verifier, then integrate Note verification into the project's existing complete check. Maintain the equal-authority English `.md`, Simplified Chinese `.zh.md`, and `.i18n.yaml` with real Git blob hashes throughout the proposed stage. Do not change existing product behavior as part of workflow adoption.
+```
+
+### Detailed Checklist
+
 1. Create `.agents/notes/{proposed,implemented,rejected,archived}`;
 2. Create all six class directories under each lifecycle;
 3. Create `archived/manifest.json` with initial content `{}`;
-4. Create `.agents/agent-note-workflow.json` and explicitly choose `bilingual`, `zh-only`, or `en-only`;
+4. Create `.agents/agent-note-workflow.json` and explicitly choose Chinese mode (`zh-only`, recommended), English mode (`en-only`), or bilingual mode (`bilingual`);
 5. Add the `AGENTS.md` baseline from this page to the project;
 6. Copy the canonical `scripts/verify-agent-notes.mjs` or add a compatible Note pairing and archive validator;
 7. Integrate `verify:notes` into the project's unified check command;
